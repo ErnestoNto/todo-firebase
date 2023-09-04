@@ -5,23 +5,24 @@ import Link from "next/link";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useAuth } from "@/contexts/auth";
 
 type FormProps = {
   isRegister?: boolean;
-  handleRegister?: () => void;
+  handleRegister: () => void;
   linkText: string;
   routerLink: string;
 };
 
 const schema = z.object({
-  name: z
-    .string()
-    .refine(
-      (fafas) => fafas.split(" ").length > 1,
-      "Coloque seu nome completo"
-    ),
+  name: z.string().refine(fafas => {
+    if (typeof fafas === 'string') {
+      return fafas.split(" ").length > 1;
+    }
+    return false;
+  }, 'Coloque seu nome completo').optional(),
   email: z.string().email("Digite um email válido"),
-  password: z.string().min(6, 'A senha deve ter pelo menos 6 caracteres'),
+  password: z.string().min(6, "A senha deve ter pelo menos 6 caracteres"),
 });
 
 const Form = ({
@@ -38,6 +39,8 @@ const Form = ({
     resolver: zodResolver(schema),
     mode: "onBlur",
   });
+
+  const { loading } = useAuth();
 
   return (
     <S.Container>
@@ -79,7 +82,7 @@ const Form = ({
           {errors.password && errors.password?.message}
         </span>
 
-        <button type="submit">Acessar</button>
+        <button type="submit">{loading ? "Carregando" : "Acessar"}</button>
 
         <Link href={routerLink}>{linkText}</Link>
       </S.Form>

@@ -6,7 +6,7 @@ import Provider from './Provider'
 const inter = Inter({ subsets: ['latin'] })
 const roboto = Roboto({
   subsets: ['latin'],
-  weight: '100'
+  weight: ['100', '300', '400', '500', '700', '900'] 
 })
 
 export const metadata: Metadata = {

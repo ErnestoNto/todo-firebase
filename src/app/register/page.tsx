@@ -4,12 +4,13 @@ import { useAuth } from '@/contexts/auth'
 import React from 'react'
 
 const Register = () => {
-  const {handleRegister} = useAuth()
+  const auth = useAuth()
 
   return (
     <>
       <Form
-        handleRegister={handleRegister}
+        // @ts-ignore
+        handleRegister={auth && auth.handleRegister}
         linkText='Já possui uma conta? Login'
         routerLink='/'
         isRegister

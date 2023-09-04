@@ -5,12 +5,13 @@ import React from 'react'
 
 const Home = () => {
 
-  const {handleLogin} = useAuth()
+  const auth = useAuth()
 
   return (
     <>
       <Form
-        handleRegister={handleLogin}
+        // @ts-ignore
+        handleRegister={auth?.handleLogin}
         routerLink='/register'
         linkText='Não possui uma conta? Cadastre-se'
       />

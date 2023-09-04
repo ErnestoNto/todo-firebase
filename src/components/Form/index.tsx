@@ -9,7 +9,7 @@ import { useAuth } from "@/contexts/auth";
 
 type FormProps = {
   isRegister?: boolean;
-  handleRegister: () => void;
+  handleRegister: (data: any) => void;
   linkText: string;
   routerLink: string;
 };
@@ -40,7 +40,7 @@ const Form = ({
     mode: "onBlur",
   });
 
-  const { loading } = useAuth();
+  const auth = useAuth();
 
   return (
     <S.Container>
@@ -56,7 +56,7 @@ const Form = ({
             />
 
             <span className="error_message">
-              {errors.name && errors.name?.message}
+              {errors.name && errors.name?.message?.toString()}
             </span>
           </>
         )}
@@ -68,7 +68,7 @@ const Form = ({
         />
 
         <span className="error_message">
-          {errors.email && errors.email?.message}
+          {errors.email && errors.email?.message?.toString()}
         </span>
 
         <input
@@ -79,10 +79,10 @@ const Form = ({
         />
 
         <span className="error_message">
-          {errors.password && errors.password?.message}
+          {errors.password && errors.password?.message?.toString()}
         </span>
 
-        <button type="submit">{loading ? "Carregando" : "Acessar"}</button>
+        <button type="submit">{auth?.loading ? "Carregando" : "Acessar"}</button>
 
         <Link href={routerLink}>{linkText}</Link>
       </S.Form>

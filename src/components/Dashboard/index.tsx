@@ -17,7 +17,7 @@ const Dashboard = () => {
   const [input, setInput] = React.useState('')
   const [loading, setLoading] = React.useState(false)
 
-  const [itemToEdit, setItemToEdit] = React.useState(null)
+  const [itemToEdit, setItemToEdit] = React.useState<string | null>(null)
 
   const auth = useAuth()
 
@@ -31,9 +31,10 @@ const Dashboard = () => {
 
       await getDocs(q)
       .then((snapshot) => {
-        let data: TaskProps[] | [] = []
+        let data: TaskProps[] = []
 
         snapshot.forEach(item => {
+
           return data.push({
             task: item.data().task,
             id: item.id
@@ -77,13 +78,14 @@ const Dashboard = () => {
     })
   }
 
-  const handleDeleteTask = async (id: string) => {
+  const handleDeleteTask = async (id: string) => 
+  {
     const docRef = doc(db, 'tasks', id)
     
     await deleteDoc(docRef)
   }
 
-  const toEditing = (data) => {
+  const toEditing = (data: TaskProps) => {
     setInput(data.task)
     setItemToEdit(data.id)
   }

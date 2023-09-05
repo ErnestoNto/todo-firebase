@@ -82,7 +82,7 @@ const Form = ({
           {errors.password && errors.password?.message?.toString()}
         </span>
 
-        <button type="submit">{auth?.loading ? "Carregando" : "Acessar"}</button>
+        <button type="submit">{auth?.loading ? (<span className="loading">Carregando</span>) : "Acessar"}</button>
 
         <Link href={routerLink}>{linkText}</Link>
       </S.Form>

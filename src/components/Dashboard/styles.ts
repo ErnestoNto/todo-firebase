@@ -82,7 +82,7 @@ export const Tasks = styled.section`
                 }
             }
         }
-    }
+    
 
     .loading{
         &::after{
@@ -95,4 +95,5 @@ export const Tasks = styled.section`
         0% {content: '.';}
         33% {content: '..';}
         66% {content: '...';}
+    }
 `;

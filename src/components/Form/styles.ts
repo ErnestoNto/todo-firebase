@@ -73,4 +73,17 @@ export const Form = styled.form`
         color: #ff0045;
         font-size: .8rem;
     }
+
+    .loading{
+        &::after{
+            content: ' ';
+            animation: elipse 2s infinite;
+        }
+    }
+
+    @keyframes elipse {
+        0% {content: '.';}
+        33% {content: '..';}
+        66% {content: '...';}
+    }
 `

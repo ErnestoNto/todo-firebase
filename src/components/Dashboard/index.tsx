@@ -3,7 +3,7 @@ import React from "react";
 import * as S from "./styles";
 import {FiEdit2, FiTrash} from 'react-icons/fi'
 
-import {doc, addDoc, getDocs, query, collection, where, deleteDoc, updateDoc} from 'firebase/firestore'
+import {doc, addDoc, getDocs, query, collection, where, deleteDoc, updateDoc, onSnapshot} from 'firebase/firestore'
 import { db } from "@/services/firebase_conection";
 import { useAuth } from "@/contexts/auth";
 
@@ -17,6 +17,8 @@ const Dashboard = () => {
   const [input, setInput] = React.useState('')
   const [loading, setLoading] = React.useState(false)
 
+  const [loadingTasks, setLoadingTasks] = React.useState(false)
+
   const [itemToEdit, setItemToEdit] = React.useState<string | null>(null)
 
   const auth = useAuth()
@@ -25,12 +27,12 @@ const Dashboard = () => {
 
   React.useEffect(() => {
     const loadTasks = async () => {
+      setLoadingTasks(true)
 
       const collectionRef = collection(db, 'tasks')
       const q = query(collectionRef, where('userUid', '==', uid))
 
-      await getDocs(q)
-      .then((snapshot) => {
+      await onSnapshot(q, (snapshot) => {
         let data: TaskProps[] = []
 
         snapshot.forEach(item => {
@@ -42,11 +44,14 @@ const Dashboard = () => {
         })
 
         setTasks(data)
+
+        setLoadingTasks(false)
       })
+
     }
 
     loadTasks()
-  }, [tasks, uid])
+  }, [uid])
 
   const handleSaveTask = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -60,6 +65,7 @@ const Dashboard = () => {
       })
       .then(() => {
         setInput('')
+        setItemToEdit(null)
         setLoading(false)
       })
 
@@ -114,22 +120,26 @@ const Dashboard = () => {
       </S.Form>
       <S.Tasks>
 
-        {tasks.length === 0 && (<p>{"Sem tarefas por aqui :'("}</p>)}
-
-        {tasks.map((item, index) => (
-          <p key={index}>
-          <span>{item.task}</span>
-          
-          <div className="controls">
-            <button onClick={() => toEditing(item)}>
-              <FiEdit2 />
-            </button>
-            <button onClick={() => handleDeleteTask(item.id)}>
-              <FiTrash />
-            </button>
-          </div>
-        </p>
-        ))}
+        {loadingTasks ? (
+          <p className='loading'>Carregando</p>
+        ) : tasks.length === 0 ? (
+          <p>Nenhuma tarefa por aqui :( </p>
+        ) : (
+          tasks.map((item, index) => (
+            <p key={index}>
+            <span>{item.task}</span>
+            
+            <span className="controls">
+              <button onClick={() => toEditing(item)}>
+                <FiEdit2 />
+              </button>
+              <button onClick={() => handleDeleteTask(item.id)}>
+                <FiTrash />
+              </button>
+            </span>
+          </p>
+          ))
+        )}
 
       </S.Tasks>
     </S.Container>
@@ -137,3 +147,5 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
+

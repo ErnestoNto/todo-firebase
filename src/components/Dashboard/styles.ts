@@ -36,6 +36,19 @@ export const Form = styled.form`
     font-size: 1.2rem;
     cursor: pointer;
   }
+
+  .loading{
+        &::after{
+            content: ' ';
+            animation: elipse 2s infinite;
+        }
+    }
+
+    @keyframes elipse {
+        0% {content: '.';}
+        33% {content: '..';}
+        66% {content: '...';}
+    }
 `;
 
 export const Tasks = styled.section`
@@ -82,18 +95,5 @@ export const Tasks = styled.section`
                 }
             }
         }
-    
-
-    .loading{
-        &::after{
-            content: ' ';
-            animation: elipse 2s infinite;
-        }
-    }
-
-    @keyframes elipse {
-        0% {content: '.';}
-        33% {content: '..';}
-        66% {content: '...';}
-    }
+        
 `;
